@@ -1,0 +1,16 @@
+THRESHOLD_DARK=4800
+
+PLASMA_DARK=BreezeDark
+PLASMA_LIGHT=BreezeLight
+CURSOR_DARK=breeze_cursors
+CURSOR_LIGHT=breeze_cursors
+ICON_DARK=breeze-dark
+ICON_LIGHT=breeze
+KONSOLE_DARK=MyDark
+KONSOLE_LIGHT=MyLight
+CHROME_DARK=1
+CHROME_LIGHT=9
+WALLPAPER_DARK=
+WALLPAPER_LIGHT=
+LOOKFEEL_DARK=org.kde.breezedark.desktop
+LOOKFEEL_LIGHT=org.kde.breeze.desktop

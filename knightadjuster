@@ -1,0 +1,104 @@
+#!/bin/sh
+
+CONFIG=~/.config/knightadjusterrc
+
+THRESHOLD_DARK=4800
+
+PLASMA_DARK=BreezeDark
+PLASMA_LIGHT=BreezeClassic
+CURSOR_DARK=Breeze_Snow
+CURSOR_LIGHT=breeze_cursors
+ICON_DARK=breeze-dark
+ICON_LIGHT=breeze
+KONSOLE_DARK=Dark
+KONSOLE_LIGHT=Light
+CHROME_DARK=1
+CHROME_LIGHT=9
+
+LOOKFEEL_DARK=org.kde.breezedark.desktop
+LOOKFEEL_LIGHT=org.kde.breeze.desktop
+
+BIN_PLASMA=plasma-apply-colorscheme
+BIN_CURSOR=plasma-apply-cursortheme
+BIN_WALLPAPER=plasma-apply-wallpaperimage
+BIN_ICON=$(locate libexec/plasma-changeicons)
+BIN_LOOKFEEL=plasma-apply-lookandfeel
+
+export DISPLAY=:0
+export XDG_RUNTIME_DIR=/run/user/$(id -u)
+
+if [ -e "$CONFIG" ]; then . "$CONFIG"; fi
+
+if [ $(qdbus-qt6 org.kde.KWin /org/kde/KWin/NightLight org.kde.KWin.NightLight.currentTemperature) -lt "$THRESHOLD_DARK" ] ; then
+	plasmacolors=$PLASMA_DARK
+	cursorcolors=$CURSOR_DARK
+	iconcolors=$ICON_DARK
+	konsolecolors=$KONSOLE_DARK
+	chromecolors=$CHROME_DARK
+	wallpaper=$WALLPAPER_DARK
+	lookfeel=$LOOKFEEL_DARK
+else
+	plasmacolors=$PLASMA_LIGHT
+	cursorcolors=$CURSOR_LIGHT
+	iconcolors=$ICON_LIGHT
+	konsolecolors=$KONSOLE_LIGHT
+	chromecolors=$CHROME_LIGHT
+	wallpaper=$WALLPAPER_LIGHT
+	lookfeel=$LOOKFEEL_LIGHT
+fi
+
+plasmacurrent=$PLASMA_LIGHT
+
+if [ "x$(qdbus-qt6 org.freedesktop.portal.Desktop /org/freedesktop/portal/desktop org.freedesktop.portal.Settings.Read org.freedesktop.appearance color-scheme)" = x1 ]; then
+	plasmacurrent=$PLASMA_DARK
+fi
+
+if [ $plasmacurrent = $plasmacolors ]; then
+	echo no change $plasmacurrent
+	exit
+fi
+
+$BIN_PLASMA $plasmacolors
+$BIN_CURSOR $cursorcolors
+$BIN_ICON $iconcolors
+# $BIN_LOOKFEEL -a $lookfeel
+
+if [ "x$wallpaper" != x ]; then
+	$BIN_WALLPAPER $wallpaper
+fi
+
+dbuskonsole=$(qdbus-qt6 | grep konsole)
+
+if [ "x$dbuskonsole" = x ]; then
+	sed -i s/DefaultProfile=.*/DefaultProfile=$konsolecolors.profile/ ~/.config/konsolerc
+else
+	for bus in $dbuskonsole; do
+		for win in $(qdbus-qt6 $bus | grep /Windows/); do
+			qdbus-qt6 $bus $win org.kde.konsole.Window.setDefaultProfile $konsolecolors
+			break
+		done
+		for ses in $(qdbus-qt6 $bus | grep /Sessions/); do
+			qdbus-qt6 $bus $ses org.kde.konsole.Session.setProfile $konsolecolors
+		done
+	done
+fi
+
+chromepid=$(pgrep chrome)
+chromeFilePath=(~/.config/google-chrome*/'Local State')
+
+if [[ $chromepid ]] && [ -f "$chromeFilePath" ] ; then 
+	chromedark=$(grep -o enable-force-dark )
+fi
+
+if [ "x$chromedark" = x ]; then
+	true
+elif [ "x$chromepid" = x ]; then
+	sed -i s/enable-force-dark@./enable-force-dark@$chromecolors/ ~/.config/google-chrome*/'Local State'
+else
+	if kdialog --yesno 'Restart chrome?'; then
+		pkill -INT -f chrome
+		pidwait chrome
+		sed -i s/enable-force-dark@./enable-force-dark@$chromecolors/ ~/.config/google-chrome*/'Local State'
+		qdbus org.kde.klauncher5 /KLauncher org.kde.KLauncher.kdeinit_exec google-chrome --restore-last-session "" ""
+	fi
+fi

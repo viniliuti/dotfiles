@@ -1,0 +1,39 @@
+{
+    "theme": "system",
+    "profiles": {
+        "defaults": {
+            "colorScheme": {
+                "dark": "ayu",
+                "light": "ayu_light (my)"
+            },
+            "font": {
+                "face": "CaskaydiaCove Nerd Font"
+            }
+        }
+    },
+    "schemes": [
+        {
+            "background": "#FAFAFA",
+            "black": "#000000",
+            "blue": "#41A6D9",
+            "brightBlack": "#323232",
+            "brightBlue": "#73D8FF",
+            "brightCyan": "#7FF1CB",
+            "brightGreen": "#B8E532",
+            "brightPurple": "#FFA3AA",
+            "brightRed": "#FF6565",
+            "brightWhite": "#B3B3B3",
+            "brightYellow": "#FFC94A",
+            "cursorColor": "#FF6A00",
+            "cyan": "#4DBF99",
+            "foreground": "#5C6773",
+            "green": "#86B300",
+            "name": "ayu_light (my)",
+            "purple": "#F07178",
+            "red": "#FF3333",
+            "selectionBackground": "#F0EEE4",
+            "white": "#F2F2F2",
+            "yellow": "#F29718"
+        }
+    ]
+}

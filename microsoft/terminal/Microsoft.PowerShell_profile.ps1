@@ -13,7 +13,7 @@ Set-PSReadLineOption -EditMode Vi
 
 Import-Module z
 
-if ($env:TERM_PROGRAM -eq "vscode") {
+if ($env:TERM_PROGRAM -eq "vscode" -or $env:WT_SESSION) {
   Set-PSReadLineKeyHandler -Chord 'Ctrl+w' -Function BackwardKillWord
 }
 

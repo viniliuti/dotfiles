@@ -1,7 +1,23 @@
 {
     "theme": "system",
+    "actions": [
+        {
+            "command": {
+                "action": "sendInput",
+                "input": "\u0017"
+            },
+            "id": "User.sendInput.DeleteWord"
+        }
+    ],
+    "keybindings": [
+        {
+            "id": "User.sendInput.DeleteWord",
+            "keys": "ctrl+backspace"
+        }
+    ],
     "profiles": {
         "defaults": {
+            "adjustIndistinguishableColors": "always",
             "colorScheme": {
                 "dark": "ayu",
                 "light": "ayu_light (my)"
@@ -12,6 +28,31 @@
         }
     },
     "schemes": [
+        // dark ayu
+        {
+            "background": "#0F1419",
+            "black": "#000000",
+            "blue": "#36A3D9",
+            "brightBlack": "#323232",
+            "brightBlue": "#68D5FF",
+            "brightCyan": "#C7FFFD",
+            "brightGreen": "#EAFE84",
+            "brightPurple": "#FFA3AA",
+            "brightRed": "#FF6565",
+            "brightWhite": "#FFFFFF",
+            "brightYellow": "#FFF779",
+            "cursorColor": "#F29718",
+            "cyan": "#95E6CB",
+            "foreground": "#E6E1CF",
+            "green": "#B8CC52",
+            "name": "ayu",
+            "purple": "#F07178",
+            "red": "#FF3333",
+            "selectionBackground": "#253340",
+            "white": "#FFFFFF",
+            "yellow": "#E7C547"
+        },
+        // ayu light
         {
             "background": "#FAFAFA",
             "black": "#000000",

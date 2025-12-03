@@ -1,7 +1,7 @@
 #! /bin/bash
 
 # TODO: 
-# upload current zsh to repo
+# create symlink to .zshrc
 # configure zsh with my settings
 # configure p10k theme
 
